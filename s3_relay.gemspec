@@ -3,14 +3,13 @@ $:.push File.expand_path("../lib", __FILE__)
 require "s3_relay/version"
 
 Gem::Specification.new do |s|
-  s.name        = "s3_relay"
+  s.name        = "mongoid_direct_s3_upload"
   s.version     = S3Relay::VERSION
-  s.authors     = ["Kenny Johnston"]
-  s.email       = ["kjohnston.ca@gmail.com"]
-  s.homepage    = "http://github.com/kjohnston/s3_relay"
-  s.summary     = "Direct uploads to S3 and ingestion by your Rails app."
-  s.description = "Enables direct file uploads to Amazon S3 and provides a flexible pattern for
-your Rails app to asynchronously ingest the files."
+  s.authors     = ["hartator"]
+  s.email       = "hartator@gmail.com"
+  s.homepage    = "http://github.com/kjohnston/mongoid-direct-s3-upload"
+  s.summary     = "Rails and Mongoid simplest helpers possible to directly upload file to S3 without hitting the server."
+  s.description = "Rails and Mongoid simplest helpers possible to directly upload file to S3 without hitting the server. Support concurrent uploads, progress bars, and more."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]

@@ -36,7 +36,7 @@ class S3Relay::UploadsController < ApplicationController
     id   = params[:parent_id]
 
     return {} unless type.present? && id.present? &&
-      parent = type.constantize.find_by_id(id)
+      parent = type.constantize.find(id)
 
     begin
       public_send(

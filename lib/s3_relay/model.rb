@@ -25,7 +25,7 @@ module S3Relay
               parent_id:   self.id,
               upload_type: upload_type
             )
-            .order("pending_at DESC").last
+            .order(:pending_at => 'desc').last
         end
       end
 

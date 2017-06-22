@@ -1,5 +1,19 @@
 module S3Relay
-  class Upload < ActiveRecord::Base
+  class Upload
+
+    include Mongoid::Document
+
+    field :uuid
+    field :user_id, type: Integer
+    field :parent_type, type: String
+    field :parent_id, type: Integer
+    field :upload_type, type: String
+    field :filename, type: String
+    field :content_type, type: String
+    field :state, type: String
+    field :data, type: Hash, default: Hash.new
+    field :pending_at, type: DateTime
+    field :imported_at, type: DateTime
 
     belongs_to :parent, polymorphic: true, optional: true
 
@@ -38,6 +52,10 @@ module S3Relay
       if parent.respond_to?(:import_upload)
         parent.import_upload(id)
       end
+    end
+
+    def public_url
+      S3Relay::PrivateUrl.new(uuid, filename).public_url
     end
 
     def private_url

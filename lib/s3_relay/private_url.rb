@@ -10,7 +10,11 @@ module S3Relay
     end
 
     def generate
-      "#{endpoint}/#{path}?#{params}"
+      "#{public_url}?#{params}"
+    end
+
+    def public_url
+      "#{endpoint}/#{path}"
     end
 
     private

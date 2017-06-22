@@ -1,7 +1,6 @@
-# s3_relay
+# Mongoid Direct Upload to Amazon S3
 
-[![Gem Version](https://badge.fury.io/rb/s3_relay.svg)](http://badge.fury.io/rb/s3_relay)
-[![Code Climate](https://codeclimate.com/github/kjohnston/s3_relay/badges/gpa.svg)](https://codeclimate.com/github/kjohnston/s3_relay)
+[Original Gem for ActiveRecord](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
 
 Enables direct file uploads to Amazon S3 and provides a flexible pattern for
 your Rails app to asynchronously ingest the files.
@@ -93,11 +92,11 @@ to learn how to lock it down further.
 * Add the following environment variables to your app:
 
 ```
-S3_RELAY_ACCESS_KEY_ID="abc123"
-S3_RELAY_SECRET_ACCESS_KEY="xzy456"
-S3_RELAY_REGION="us-west-2"
-S3_RELAY_BUCKET="some-s3-bucket"
-S3_RELAY_ACL="private"
+ENV["S3_RELAY_ACCESS_KEY_ID"]="abc123"
+ENV["S3_RELAY_SECRET_ACCESS_KEY"]="xzy456"
+ENV["S3_RELAY_REGION"]="us-west-2"
+ENV["S3_RELAY_BUCKET"]="some-s3-bucket"
+ENV["S3_RELAY_ACL"]="public-read"
 ```
 
 ## Use
@@ -106,7 +105,7 @@ S3_RELAY_ACL="private"
 
 ```ruby
 class Product < ActiveRecord::Base
-  s3_relay :icon_upload
+  s3_relay :icon
   s3_relay :photo_uploads, has_many: true
 end
 ```
@@ -127,7 +126,7 @@ end
 
 ```ruby
 product_params = params.require(:product)
-  .permit(:name, :new_icon_upload_uuids: [], new_photo_uploads_uuids: [])
+  .permit(:name, :new_icon_uuids: [], new_photo_uploads_uuids: [])
 
 @product = Product.new(product_params)
 ```
@@ -135,7 +134,7 @@ product_params = params.require(:product)
 ### Add file upload fields to your views
 
 ```erb
-<%= s3_relay_field @product, :icon_upload %>
+<%= s3_relay_field @product, :icon %>
 <%= s3_relay_field @product, :photo_uploads, multiple: true %>
 ```
 
@@ -145,6 +144,12 @@ option like so:
 
 ```erb
 <%= s3_relay_field @artist, :mp3_uploads, multiple: true, disposition: "attachment" %>
+```
+
+### View file
+
+```erb
+<%= image_tag @product.icon.public_url %>
 ```
 
 ### Importing files
