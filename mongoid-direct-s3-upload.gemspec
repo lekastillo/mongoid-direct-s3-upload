@@ -3,11 +3,11 @@ $:.push File.expand_path("../lib", __FILE__)
 require "s3_relay/version"
 
 Gem::Specification.new do |s|
-  s.name        = "mongoid_direct_s3_upload"
+  s.name        = "mongoid-direct-s3-upload"
   s.version     = S3Relay::VERSION
   s.authors     = ["hartator"]
   s.email       = "hartator@gmail.com"
-  s.homepage    = "http://github.com/kjohnston/mongoid-direct-s3-upload"
+  s.homepage    = "http://github.com/hartator/mongoid-direct-s3-upload"
   s.summary     = "Rails and Mongoid simplest helpers possible to directly upload file to S3 without hitting the server."
   s.description = "Rails and Mongoid simplest helpers possible to directly upload file to S3 without hitting the server. Support concurrent uploads, progress bars, and more."
   s.license     = "MIT"
