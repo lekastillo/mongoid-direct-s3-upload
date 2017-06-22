@@ -85,7 +85,6 @@ to learn how to lock it down further.
 ## Installation
 
 * Add `gem "mongoid-direct-s3-upload"` to your Gemfile and run `bundle`.
-* Add migrations to your app with `rake s3_relay:install:migrations db:migrate`.
 * Add `mount S3Relay::Engine => "/s3_relay"` to the top of your routes file.
 * Add `require s3_relay` to your JavaScript manifest.
 * [Optional] Add `require s3_relay` to your Style Sheet manifest.
