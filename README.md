@@ -237,11 +237,11 @@ end
 
 ## Contributing
 
-1. [Fork it](https://github.com/kjohnston/s3_relay/fork)
+1. [Fork it](https://github.com/hartator/mongoid-direct-s3-upload/fork)
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Added some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. [Create a Pull Request](https://github.com/kjohnston/s3_relay/pull/new)
+5. [Create a Pull Request](https://github.com/hartator/mongoid-direct-s3-upload/pull/new)
 
 ## License
 
