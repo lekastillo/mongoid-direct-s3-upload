@@ -1,6 +1,8 @@
 # Mongoid Direct Upload to Amazon S3
 
-[Original Gem for ActiveRecord](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
+Or `s3_relay_mongoid`
+
+[Original s3_relay Gem for ActiveRecord](http://docs.aws.amazon.com/AmazonS3/latest/dev/cors.html)
 
 Enables direct file uploads to Amazon S3 and provides a flexible pattern for
 your Rails app to asynchronously ingest the files.
@@ -8,7 +10,7 @@ your Rails app to asynchronously ingest the files.
 ## Overview
 
 This Rails engine allows you to quickly implement direct uploads to Amazon S3
-from your Rails 3.1+ / 4.x application.  It does not depend on any specific file
+from your Rails 3.1+ / 4.x / 5.x application.  It does not depend on any specific file
 upload libraries, UI frameworks or AWS gems, like other solutions tend to.
 
 It works by utilizing Amazon S3's
@@ -51,8 +53,6 @@ adhering to for a couple of major versions now.  Even IE, wuh?
 The latest versions of all of the following are ideal, but here are the gem's
 minimum requirements:
 
-* For rails 5.1+, use version 0.6.x+ and ruby 2.3+
-* For rails 3.1 to 5.0, use version 0.5.x and ruby 1.9.3+
 * Modern versions of Chrome, Safari, FireFox or IE 10+
   * Note: Progress bars are currently disabled in IE
   * Note: IE <= 9 users will be instructed to upgrade their browser upon
@@ -60,7 +60,7 @@ minimum requirements:
 
 ## Demo
 
-See a demo application using `s3_relay` [here](https://github.com/kjohnston/s3_relay-demo).
+See the ActiveRecord demo application using `s3_relay` [here](https://github.com/kjohnston/s3_relay-demo).
 
 ## Configuring CORS
 
@@ -84,12 +84,14 @@ to learn how to lock it down further.
 
 ## Installation
 
-* Add `gem "s3_relay"` to your Gemfile and run `bundle`.
+* Add `gem "mongoid-direct-s3-upload"` to your Gemfile and run `bundle`.
 * Add migrations to your app with `rake s3_relay:install:migrations db:migrate`.
 * Add `mount S3Relay::Engine => "/s3_relay"` to the top of your routes file.
 * Add `require s3_relay` to your JavaScript manifest.
 * [Optional] Add `require s3_relay` to your Style Sheet manifest.
 * Add the following environment variables to your app:
+
+`./config/initializers/mongoid-direct-s3-upload.rb`
 
 ```
 ENV["S3_RELAY_ACCESS_KEY_ID"]="abc123"
@@ -104,7 +106,9 @@ ENV["S3_RELAY_ACL"]="public-read"
 ### Add upload definitions to your model
 
 ```ruby
-class Product < ActiveRecord::Base
+class Product
+  include Mongoid::Document
+  extend S3Relay::Model
   s3_relay :icon
   s3_relay :photo_uploads, has_many: true
 end
@@ -146,13 +150,13 @@ option like so:
 <%= s3_relay_field @artist, :mp3_uploads, multiple: true, disposition: "attachment" %>
 ```
 
-### View file
+### View file on Amazon S3
 
 ```erb
 <%= image_tag @product.icon.public_url %>
 ```
 
-### Importing files
+### Importing files back to the server for processing
 
 #### Processing uploads asynchronously
 
