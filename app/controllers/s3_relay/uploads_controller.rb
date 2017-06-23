@@ -15,7 +15,7 @@ class S3Relay::UploadsController < ApplicationController
         private_url: @upload.private_url,
         parent_type: @upload.parent_type,
         parent_id: @upload.parent_id,
-        user_id: user_attrs[:user_id]
+        user_id: BSON::ObjectId(user_attrs[:user_id])
       }
       render json: data, status: 201
     else
@@ -32,20 +32,10 @@ class S3Relay::UploadsController < ApplicationController
   end
 
   def parent_attrs
-    type = params[:parent_type].try(:classify)
-    id   = params[:parent_id]
-
-    return {} unless type.present? && id.present? &&
-      parent = type.constantize.find(id)
-
-    begin
-      public_send(
-        "#{type.underscore.downcase}_#{params[:association]}_params",
-        parent
-      )
-    rescue NoMethodError
-      { parent: parent }
-    end
+    {
+      parent_type: params[:parent_type].try(:classify),
+      parent_id: BSON::ObjectId(params[:parent_id])
+    }
   end
 
   def upload_attrs

@@ -4,9 +4,9 @@ module S3Relay
     include Mongoid::Document
 
     field :uuid
-    field :user_id, type: Integer
+    field :user_id, type: BSON::ObjectId
     field :parent_type, type: String
-    field :parent_id, type: Integer
+    field :parent_id, type: BSON::ObjectId
     field :upload_type, type: String
     field :filename, type: String
     field :content_type, type: String
