@@ -2,6 +2,7 @@ module S3Relay
   module Model
 
     def s3_relay(attribute, has_many=false)
+
       upload_type = attribute.to_s.classify
 
       if has_many
@@ -13,7 +14,7 @@ module S3Relay
               parent_type: self.class.to_s,
               parent_id:   self.id,
               upload_type: upload_type
-            )
+            ).to_a
         end
       else
         has_one attribute, as: :parent, class_name: "S3Relay::Upload"
