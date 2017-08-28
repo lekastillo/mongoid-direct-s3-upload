@@ -73,7 +73,7 @@ uploadFile = (container, file) ->
       uuid = data.uuid
 
       uploadList = $(".s3r-upload-list", container)
-      uploadList.prepend("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar' style='display: none;'><div class='s3r-meter'></div></div></td></tr>")
+      uploadList.prepend("<tr id='#{uuid}'><td><div class='s3r-file-url'>#{fileName}</div></td><td class='s3r-progress'><div class='s3r-bar progress' style='display: none;'><div class='s3r-meter progress-bar progress-bar-striped progress-bar-animated info'></div></div></td></tr>")
       fileColumn = $(".s3r-upload-list ##{uuid} .s3r-file-url", container)
       progressColumn = $(".s3r-upload-list ##{uuid} .s3r-progress", container)
       progressBar = $(".s3r-bar", progressColumn)
@@ -84,13 +84,15 @@ uploadFile = (container, file) ->
           percentage = ((ev.loaded / ev.total) * 100.0).toFixed(0)
           progressBar.show()
           progressMeter.css "width", "#{percentage}%"
+          if percentage > 10
+            progressMeter.html "#{percentage}% &nbsp; "
         else
           progressColumn.text("Uploading...")  # IE can't get position
 
       xhr.onreadystatechange = (ev) ->
         if xhr.readyState is 4
-          progressColumn.text("")  # IE can't get position
-          progressBar.remove()
+          progressMeter.html("Done &nbsp; ")  # IE can't get position
+          progressMeter.removeClass("progress-bar-animated")
 
           if xhr.status == 201
             contentType = file.type

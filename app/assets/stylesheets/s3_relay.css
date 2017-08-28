@@ -1,31 +1,19 @@
 .s3r-upload-list {
   border: 1px solid #ccc;
   border-collapse: collapse;
-  margin: 15px 0;
+  margin: 0;
+  width: 75%;
 }
 
 .s3r-upload-list td {
   border-bottom: 1px solid #ccc;
   padding: .5em;
-  width: 180px;
+  width: 50%;
 }
 
 .s3r-file-url {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 180px;
-}
-
-.s3r-bar {
-  background-color: #eee;
-  border-radius: 3px;
-  height: 15px;
-  width: 180px;
-}
-
-.s3r-meter {
-  background-color: #43ac6a;
-  border-radius: 3px;
-  height: 15px;
+  width: 100%;
 }
