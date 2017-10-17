@@ -63,6 +63,11 @@ module S3Relay
       "http://epartrade.s3-website-us-west-1.amazonaws.com/500x500/#{file_full_s3_key}"
     end
 
+    def public_url_with_size size
+      file_full_s3_key = public_url.split('amazonaws.com/')[1]
+      "http://epartrade.s3-website-us-west-1.amazonaws.com/#{size}/#{file_full_s3_key}"
+    end
+
     def private_url
       S3Relay::PrivateUrl.new(uuid, filename).generate
     end
