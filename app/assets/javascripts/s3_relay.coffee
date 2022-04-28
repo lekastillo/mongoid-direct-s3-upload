@@ -29,7 +29,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
         fileColumn.html("<a href='#{privateUrl}' target='_blank'>#{filename}</a>")
 
         virtualAttr = "#{container.data('parentType')}[new_#{container.data('association')}_uuids]"
-        hiddenField = "<input type='hidden' name='#{virtualAttr}[]' value='#{uuid}' />"
+        hiddenField = "<input type='hidden' name='#{virtualAttr}' value='#{uuid}' />"
         container.append(hiddenField)
       publishEvent(container, "upload:success", [ uuid, filename, privateUrl ])
     error: (xhr) ->
@@ -87,16 +87,16 @@ uploadFile = (container, file) ->
           if percentage > 10
             progressMeter.html "#{percentage}% &nbsp; "
         else
-          progressColumn.text("Uploading...")  # IE can't get position
+          progressColumn.text("Subiendo archivo...")  # IE can't get position
 
       xhr.onreadystatechange = (ev) ->
         if xhr.readyState is 4
-          progressMeter.html("Done &nbsp; ")  # IE can't get position
+          progressMeter.html("Subida Completada &nbsp; ")  # IE can't get position
           progressMeter.removeClass("progress-bar-animated")
 
           if xhr.status == 201
             contentType = file.type
-            publicUrl = $("Location", xhr.responseXML).text()
+            publicUrl = $("Hubicación", xhr.responseXML).text()
             saveUrl(container, uuid, fileName, contentType, publicUrl, progressColumn, fileColumn)
           else
             displayFailedUpload(progressColumn)
