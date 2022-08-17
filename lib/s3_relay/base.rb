@@ -24,7 +24,7 @@ module S3Relay
     end
 
     def endpoint
-      "https://#{bucket}.s3-#{region}.amazonaws.com"
+      ENV["S3_ENDPOINT"] #"https://#{bucket}.s3-#{region}.amazonaws.com"
     end
 
     def digest
