@@ -83,6 +83,7 @@ uploadFile = (container, file) ->
         if ev.loaded
           percentage = ((ev.loaded / ev.total) * 100.0).toFixed(0)
           progressBar.show()
+          container.parents('form').find(':submit').attr('disabled','disabled');
           progressMeter.css "width", "#{percentage}%"
           if percentage > 10
             progressMeter.html "#{percentage}% &nbsp; "
@@ -93,10 +94,11 @@ uploadFile = (container, file) ->
         if xhr.readyState is 4
           progressMeter.html("Subida Completada &nbsp; ")  # IE can't get position
           progressMeter.removeClass("progress-bar-animated")
+          container.parents('form').find(':submit').removeAttr('disabled');
 
           if xhr.status == 201
             contentType = file.type
-            publicUrl = $("Hubicación", xhr.responseXML).text()
+            publicUrl = $("Ubicación", xhr.responseXML).text()
             saveUrl(container, uuid, fileName, contentType, publicUrl, progressColumn, fileColumn)
           else
             displayFailedUpload(progressColumn)
