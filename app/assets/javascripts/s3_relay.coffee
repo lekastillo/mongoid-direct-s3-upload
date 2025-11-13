@@ -43,8 +43,17 @@ uploadFiles = (container) ->
   uploadFile(container, file) for file in files
   fileInput.val("")
 
+sanitizeFileName = (name) ->
+  # Remove accents and diacritics
+  sanitized = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  # Replace spaces with underscores
+  sanitized = sanitized.replace(/\s+/g, '_')
+  # Remove any remaining special characters except dots, underscores, and hyphens
+  sanitized = sanitized.replace(/[^a-zA-Z0-9._-]/g, '')
+  sanitized
+
 uploadFile = (container, file) ->
-  fileName = file.name
+  fileName = sanitizeFileName(file.name)
 
   # Assign unique value to each request so Safari doesn't consolidate them
   @s3r_upload_index ||= 0
