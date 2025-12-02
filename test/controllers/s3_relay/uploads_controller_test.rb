@@ -11,12 +11,10 @@ module S3Relay
         .returns("region")
       S3Relay::Base.any_instance.stubs(:bucket)
         .returns("bucket")
-      S3Relay::Base.any_instance.stubs(:acl)
-        .returns("acl")
     end
 
     describe "GET new" do
-      it do
+      it "returns presigned data with default ACL" do
         uuid = "123-456-789"
         time = Time.parse("2014-12-01 12:00am")
         S3Relay::UploadPresigner.any_instance.stubs(:uuid).returns(uuid)
@@ -31,11 +29,37 @@ module S3Relay
         data["x_amz_server_side_encryption"].must_equal "AES256"
         data["key"].must_equal "#{uuid}/${filename}"
         data["success_action_status"].must_equal "201"
-        data["acl"].must_equal "acl"
+        data["acl"].must_equal "private"
         data["endpoint"].must_equal "https://bucket.s3-region.amazonaws.com"
         data["policy"].length.must_equal 380  # TODO: Improve this
         data["signature"].length.must_equal 28  # TODO: Improve this
         data["uuid"].must_equal uuid
+      end
+
+      it "accepts custom ACL parameter" do
+        uuid = "123-456-789"
+        time = Time.parse("2014-12-01 12:00am")
+        S3Relay::UploadPresigner.any_instance.stubs(:uuid).returns(uuid)
+        S3Relay::UploadPresigner.any_instance.stubs(:expires).returns(time)
+
+        get new_s3_relay_upload_url, params: { acl: 'public-read' }
+        assert_response 200
+
+        data = JSON.parse(response.body)
+        data["acl"].must_equal "public-read"
+      end
+
+      it "ignores invalid ACL parameter" do
+        uuid = "123-456-789"
+        time = Time.parse("2014-12-01 12:00am")
+        S3Relay::UploadPresigner.any_instance.stubs(:uuid).returns(uuid)
+        S3Relay::UploadPresigner.any_instance.stubs(:expires).returns(time)
+
+        get new_s3_relay_upload_url, params: { acl: 'invalid-acl' }
+        assert_response 200
+
+        data = JSON.parse(response.body)
+        data["acl"].must_equal "private"  # Falls back to default
       end
     end
 

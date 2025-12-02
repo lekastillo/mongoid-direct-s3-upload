@@ -14,7 +14,8 @@ module S3Relay
             parent_type: parent_type,
             parent_id:   parent.id.to_s,
             association: association.to_s,
-            disposition: opts.fetch(:disposition, "inline")
+            disposition: opts.fetch(:disposition, "inline"),
+            acl:         opts.fetch(:acl, ENV['S3_RELAY_ACL'] || 'private')
           }
         }
       )

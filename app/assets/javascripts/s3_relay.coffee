@@ -53,6 +53,8 @@ uploadFile = (container, file) ->
   $.ajax
     type: "GET"
     url: "/s3_relay/uploads/new?s3r_upload_index=#{s3r_upload_index}"
+    data:
+      acl: container.data("acl")
     success: (data, status, xhr) ->
       formData = new FormData()
       xhr = new XMLHttpRequest()

@@ -149,6 +149,20 @@ option like so:
 <%= s3_relay_field @artist, :mp3_uploads, multiple: true, disposition: "attachment" %>
 ```
 
+* By default the ACL (Access Control List) for uploaded files will be set to 
+`private` (or the value of `ENV['S3_RELAY_ACL']` if configured). You can 
+override this per-field by passing the `acl` option:
+
+```erb
+<%# Upload with private ACL (default) %>
+<%= s3_relay_field @product, :contracts, acl: 'private' %>
+
+<%# Upload with public-read ACL for publicly accessible files %>
+<%= s3_relay_field @product, :photos, acl: 'public-read' %>
+```
+
+Valid ACL values are: `private`, `public-read`, `public-read-write`, and `authenticated-read`.
+
 ### View file on Amazon S3
 
 ```erb

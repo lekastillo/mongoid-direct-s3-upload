@@ -1,11 +1,12 @@
 module S3Relay
   class UploadPresigner < S3Relay::Base
 
-    attr_reader :expires, :uuid
+    attr_reader :expires, :uuid, :acl
 
     def initialize(options={})
       @expires = (options[:expires] || 1.minute.from_now).utc.xmlschema
       @uuid    = SecureRandom.uuid
+      @acl     = options[:acl] || ENV['S3_RELAY_ACL'] || 'private'
     end
 
     def form_data
@@ -26,7 +27,7 @@ module S3Relay
         "x-amz-server-side-encryption" => "AES256",
         "key"                          => "#{uuid}/${filename}",
         "success_action_status"        => "201",
-        "acl"                          => acl
+        "acl"                          => @acl
       }
     end
 
@@ -39,7 +40,7 @@ module S3Relay
         "expiration" => expires,
         "conditions" => [
           { "bucket" => bucket },
-          { "acl" => acl },
+          { "acl" => @acl },
           { "x-amz-server-side-encryption" => "AES256" },
           { "success_action_status" => "201" },
           ["starts-with", "$content-type", ""],

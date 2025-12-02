@@ -3,8 +3,11 @@ class S3Relay::UploadsController < ApplicationController
   before_action :authenticate
   skip_before_action :verify_authenticity_token
 
+  VALID_ACLS = %w[private public-read public-read-write authenticated-read]
+
   def new
-    render json: S3Relay::UploadPresigner.new.form_data
+    acl = params[:acl] if VALID_ACLS.include?(params[:acl])
+    render json: S3Relay::UploadPresigner.new(acl: acl).form_data
   end
 
   def create
