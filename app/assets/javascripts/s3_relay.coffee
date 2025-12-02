@@ -18,7 +18,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
       parent_id: container.data("parentId")
       association: container.data("association")
       uuid: uuid
-      filename: filename
+      filename: sanitizeFileName(filename)
       content_type: contentType
       public_url: publicUrl
     success: (data, status, xhr) ->
