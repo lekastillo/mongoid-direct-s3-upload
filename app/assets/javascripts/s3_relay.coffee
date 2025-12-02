@@ -7,6 +7,15 @@ displayFailedUpload = (progressColumn=null) ->
 publishEvent = (target, name, detail) ->
   $(target).trigger( name, detail )
 
+sanitizeFileName = (name) ->
+  # Remove accents and diacritics
+  sanitized = name.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  # Replace spaces with underscores
+  sanitized = sanitized.replace(/\s+/g, '_')
+  # Remove any remaining special characters except dots, underscores, and hyphens
+  sanitized = sanitized.replace(/[^a-zA-Z0-9._-]/g, '')
+  sanitized
+
 saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fileColumn) ->
   privateUrl = null
 
@@ -18,7 +27,7 @@ saveUrl = (container, uuid, filename, contentType, publicUrl, progressColumn, fi
       parent_id: container.data("parentId")
       association: container.data("association")
       uuid: uuid
-      filename: filename
+      filename: sanitizeFileName(filename)
       content_type: contentType
       public_url: publicUrl
     success: (data, status, xhr) ->
@@ -44,7 +53,7 @@ uploadFiles = (container) ->
   fileInput.val("")
 
 uploadFile = (container, file) ->
-  fileName = file.name
+  fileName = sanitizeFileName(file.name)
 
   # Assign unique value to each request so Safari doesn't consolidate them
   @s3r_upload_index ||= 0
