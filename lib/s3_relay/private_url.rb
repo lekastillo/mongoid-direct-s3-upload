@@ -6,7 +6,9 @@ module S3Relay
     attr_reader :expires, :path
 
     def initialize(uuid, file, options={})
-      filename = Addressable::URI.escape(file).gsub("+", "%2B")
+      # filename = Addressable::URI.escape(file).gsub("+", "%2B")
+      sanitized = sanitize_filename(file)
+      filename = Addressable::URI.escape(sanitized)
       @path    = [uuid, filename].join("/")
       @expires = (options[:expires] || 10.minutes.from_now).to_i
     end
@@ -20,6 +22,14 @@ module S3Relay
     end
 
     private
+
+    def sanitize_filename(name)
+      # Normalizar y remover acentos
+      sanitized = name.unicode_normalize(:nfd)
+                      .encode('ASCII', replace: '')
+      # Reemplazar espacios y caracteres especiales
+      sanitized.gsub(/[^a-zA-Z0-9._-]/, '_')
+    end
 
     def params
       [
