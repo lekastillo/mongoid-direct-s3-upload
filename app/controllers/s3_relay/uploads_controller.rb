@@ -3,7 +3,7 @@ class S3Relay::UploadsController < ApplicationController
   before_action :authenticate
   skip_before_action :verify_authenticity_token
 
-  VALID_ACLS = %w[private public-read public-read-write authenticated-read]
+  VALID_ACLS = %w[private public-read authenticated-read]
 
   def new
     acl = params[:acl] if VALID_ACLS.include?(params[:acl])

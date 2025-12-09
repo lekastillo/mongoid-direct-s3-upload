@@ -25,7 +25,8 @@ module S3Relay
       {
         "AWSAccessKeyID"               => access_key_id,
         "x-amz-server-side-encryption" => "AES256",
-        "key"                          => "#{uuid}/${filename}",
+        # "key"                          => "#{uuid}/${filename}",
+        "key"                          => "#{uuid}",
         "success_action_status"        => "201",
         "acl"                          => @acl
       }

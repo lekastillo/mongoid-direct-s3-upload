@@ -72,7 +72,7 @@ uploadFile = (container, file) ->
 
       formData.append("AWSAccessKeyID", data.awsaccesskeyid)
       formData.append("x-amz-server-side-encryption", data.x_amz_server_side_encryption)
-      formData.append("key", data.key)
+      formData.append("key", data.key+"/#{fileName}")
       formData.append("success_action_status", data.success_action_status)
       formData.append("acl", data.acl)
       formData.append("policy", data.policy)
